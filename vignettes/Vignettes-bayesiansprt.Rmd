@@ -1,0 +1,152 @@
+<!-- Copyright (C) 2021 Merck Sharp & Dohme Corp. a subsidiary of Merck & Co., Inc., Kenilworth, NJ, USA.
+
+ This file is part of bayesiansprt.
+
+     bayesiansprt is free software: you can redistribute it and/or modify
+     it under the terms of the GNU General Public License as published by
+     the Free Software Foundation, either version 3 of the License, or
+     (at your option) any later version.
+
+     bayesiansprt is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU General Public License for more details.
+
+     You should have received a copy of the GNU General Public License
+     along with bayesiansprt.  If not, see <https://www.gnu.org/licenses/>. -->
+     
+---
+title: "bayesiansprt"
+output: 
+  pdf_document:
+    toc: true
+    toc_depth: 3
+    number_sections: true
+vignette: >
+  %\VignetteIndexEntry{bayesiansprt}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introduction
+This vignette will provide some examples of using the package `bayesiansprt` (under GPL-3 licence) to provide the results for sequential probability ratio test (SPRT) under Bayesian setup. It also provides the results based on the frequentist approach.
+
+# Efficacy and futility boundaries
+In SPRT, we can define the thresholds, that is, efficacy and futility boundaries, for accepting the null and alternative hypothesis with respect to the number of events in the treatment group. The `SPRTboundary` function provides the efficacy and futility boundaries for the sequential ratio probability test under the frequentist and Bayesian setup. Here is the example of calculating the boundaries under the Bayesian setup. Under the frequentist context, we do not need to provide the `optimum.w`, `w`, `a.prior`, `b.prior` as these parameters are related to Bayesian priors.
+
+## Bayesian Example
+```{r boundary, message = FALSE}
+#################
+# Load packages #
+#################
+
+library(dplyr)
+library(bayesiansprt)
+
+##################
+# Specify values #
+##################
+
+method = "Bayes"
+n.event = 60
+n.start = 30
+n.increment = 5
+ve.null = 0.3
+ve.alt = 0.75
+type1 = 0.025
+power = 0.9
+ratio.alloc = 1
+optimum.w = TRUE
+w = 0.5
+b.prior = 1
+
+
+########################
+# Calculate boundaries #
+########################
+
+boundary.result = SPRTboundary(method, n.event, n.start, n.increment, ve.null, 
+                               ve.alt, type1, power, ratio.alloc, optimum.w, w, 
+                               b.prior)
+
+boundary.result$boundary
+```
+
+## Frequentist Example
+```{r fboundary, message = FALSE}
+##################
+# Specify values #
+##################
+
+method = "Freq"
+
+########################
+# Calculate boundaries #
+########################
+
+boundary.result = SPRTboundary(method, n.event, n.start, n.increment, ve.null, 
+                               ve.alt, type1, power, ratio.alloc, optimum.w, w, 
+                               b.prior)
+
+boundary.result$boundary
+```
+
+# SPRT 
+Now, based on the boundaries with interim time-points and weights of hyper-prior, we can generate data and calculate the probability corresponding to the boundaries ($r_1$ and $r_2$), estimated type-I error and power, cumulative probability, and average number of
+events. In this example, we have shown the results under null hypothesis.
+
+```{r sprtonve, message = FALSE}
+##########
+# Result #
+##########
+
+# Under null hypothesis
+SPRTonVE(n.sim = 10000, boundary.val = boundary.result$boundary,
+         ve.null = boundary.result$ve.null, ve.alt = boundary.result$ve.alt, 
+         ve = boundary.result$ve.null, ratio.alloc = boundary.result$ratio.alloc,
+         seed = 134)
+```
+
+# Optimum weight for Bayesian prior
+The main attractive feature of this package is to get optimum weight for interim analysis under the Bayesian setup. Using the SPRT rules, we can obtain the threshold for the number of events in the treat group to make the decision at each interim or final analysis. Due to discrete nature of the binomial distribution, the critical region for the efficacy boundary could be the same for multiple values of total number of events. Therefore, in SPRT we should find the optimum interim time-points where we can make decisions the earliest with high power. So, choosing an interim time-point with the minimum number of events for a given critical region of the efficacy boundary should provide better power. In the following example, we show that how we can optimize the weight and use this for calculating results under Bayesian paradigm.
+
+```{r setup, message = FALSE}
+
+method = "Bayes"
+n.sim = 10000
+n.event = 60
+n.start = 30
+n.increment = 5
+ve.null = 0.3
+ve.alt = 0.75
+type1 = 0.025
+power = 0.9
+ratio.alloc = 1
+optimum.w = TRUE
+b.prior = 1
+seed = 134
+
+##########
+# Result #
+##########
+
+opt.w = SPRToptimumW(n.sim = n.sim, n.event = n.event, n.start = n.start,
+                     n.increment = n.increment, ve.null = ve.null, ve.alt = ve.alt,
+                     type1 = type1, power = power, ratio.alloc = ratio.alloc,
+                     w = seq(0.1, 0.9, by = 0.1), b.prior = b.prior, seed = seed)
+
+results = outputSPRT(method = method, n.sim = n.sim, n.event = n.event, n.start = n.start,
+                     n.increment = n.increment, ve.null = ve.null, ve.alt = ve.alt,
+                     type1 = type1, power = power, ratio.alloc = ratio.alloc,
+                     optimum.w = optimum.w, w = opt.w$weight, b.prior = b.prior, 
+                     seed = seed)
+results
+
+```

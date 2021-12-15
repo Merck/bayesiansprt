@@ -1,0 +1,95 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- Copyright (C) 2021 Merck Sharp & Dohme Corp. a subsidiary of Merck & Co., Inc., Kenilworth, NJ, USA.
+
+ This file is part of bayesiansprt.
+
+     bayesiansprt is free software: you can redistribute it and/or modify
+     it under the terms of the GNU General Public License as published by
+     the Free Software Foundation, either version 3 of the License, or
+     (at your option) any later version.
+
+     bayesiansprt is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU General Public License for more details.
+
+     You should have received a copy of the GNU General Public License
+     along with bayesiansprt.  If not, see <https://www.gnu.org/licenses/>. -->
+     
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# bayesiansprt
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of `bayesiansprt` (under GPL-3 licence) is to provide the results for sequential probability ratio test under frequentist and Bayesian setup.
+
+## Installation
+
+You can install the released version of `bayesiansprt` from [CRAN](https://CRAN.R-project.org) with:
+
+``` r
+install.packages("bayesiansprt")
+```
+
+## Example
+
+This is a basic example which shows you how to solve a common problem:
+
+```{r example}
+library(bayesiansprt)
+## basic example code
+method = "Bayes"
+n.sim = 10000
+n.event = 60
+n.start = 30
+n.increment = 5
+ve.null = 0.3
+ve.alt = 0.75
+type1 = 0.025
+power = 0.9
+ratio.alloc = 1
+optimum.w = TRUE
+b.prior = 1
+seed = 134
+
+opt.w = SPRToptimumW(n.sim = n.sim, n.event = n.event, n.start = n.start,
+                     n.increment = 5, ve.null = ve.null, ve.alt = ve.alt,
+                     type1 = type1, power = power, ratio.alloc = ratio.alloc,
+                     w = seq(0.8, 0.9, by = 0.1), b.prior = b.prior, seed = seed)
+
+results = outputSPRT(method = method, n.sim = n.sim, n.event = n.event, n.start = n.start,
+                    n.increment = n.increment, ve.null = ve.null, ve.alt = ve.alt,
+                    type1 = type1, power = power, ratio.alloc = ratio.alloc,
+                    optimum.w = optimum.w, w = opt.w$weight, b.prior = b.prior, seed = seed)
+results
+```
+
+<!-- What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so: -->
+
+<!-- ```{r cars} -->
+<!-- summary(cars) -->
+<!-- ``` -->
+
+<!-- You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. -->
+
+<!-- You can also embed plots, for example: -->
+
+<!-- ```{r pressure, echo = FALSE} -->
+<!-- plot(pressure) -->
+<!-- ``` -->
+
+<!-- In that case, don't forget to commit and push the resulting figure files, so they display on GitHub! -->
