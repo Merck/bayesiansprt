@@ -1,38 +1,33 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-<!-- Copyright (C) 2021 Merck Sharp & Dohme Corp. a subsidiary of Merck & Co., Inc., Kenilworth, NJ, USA.
 
- This file is part of bayesiansprt.
-
-     bayesiansprt is free software: you can redistribute it and/or modify
-     it under the terms of the GNU General Public License as published by
-     the Free Software Foundation, either version 3 of the License, or
-     (at your option) any later version.
-
-     bayesiansprt is distributed in the hope that it will be useful,
-     but WITHOUT ANY WARRANTY; without even the implied warranty of
-     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-     GNU General Public License for more details.
-
-     You should have received a copy of the GNU General Public License
-     along with bayesiansprt.  If not, see <https://www.gnu.org/licenses/>. -->
-
-# bayesiansprt
+# baysiansprt
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of `bayesiansprt` (under GPL-3 licence) is to provide the
-results for sequential probability ratio test under frequentist and
-Bayesian setup.
+The goal of `bayesiansprt` is to provide the results for sequential
+probability ratio test under frequentist and Bayesian setup.
+
+## Dependencies
+
+`bayesiansprt` requires the following `R` package: `devtools` (for
+installation only). Please install it before installing `bayesiansprt`,
+which can be done as follows (execute from within a fresh `R` session):
+
+``` r
+install.packages("devtools")
+library(devtools)
+```
 
 ## Installation
 
-You can install the released version of `bayesiansprt` from
-[CRAN](https://CRAN.R-project.org) with:
+Once the dependencies are installed, `bayesiansprt` can be loaded using
+the following command:
 
 ``` r
-install.packages("bayesiansprt")
+devtools::install_github("Merck/bayesiansprt")
+library(bayesiansprt)
 ```
 
 ## Example
@@ -131,8 +126,8 @@ results
 #> 
 #> $time
 #>          Time (in seconds)
-#> Under.H0          8.895806
-#> Under.H1          6.748705
+#> Under.H0          23.71371
+#> Under.H1          18.59240
 #> 
 #> $method
 #> [1] "Bayes"

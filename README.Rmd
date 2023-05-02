@@ -3,23 +3,6 @@ output: github_document
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-<!-- Copyright (C) 2021 Merck Sharp & Dohme Corp. a subsidiary of Merck & Co., Inc., Kenilworth, NJ, USA.
-
- This file is part of bayesiansprt.
-
-     bayesiansprt is free software: you can redistribute it and/or modify
-     it under the terms of the GNU General Public License as published by
-     the Free Software Foundation, either version 3 of the License, or
-     (at your option) any later version.
-
-     bayesiansprt is distributed in the hope that it will be useful,
-     but WITHOUT ANY WARRANTY; without even the implied warranty of
-     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-     GNU General Public License for more details.
-
-     You should have received a copy of the GNU General Public License
-     along with bayesiansprt.  If not, see <https://www.gnu.org/licenses/>. -->
-     
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -30,20 +13,33 @@ knitr::opts_chunk$set(
 )
 ```
 
-# bayesiansprt
+# baysiansprt
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
-The goal of `bayesiansprt` (under GPL-3 licence) is to provide the results for sequential probability ratio test under frequentist and Bayesian setup.
+The goal of `bayesiansprt` is to provide the results for sequential probability ratio test under frequentist and Bayesian setup.
+
+## Dependencies
+
+`bayesiansprt` requires the following `R` package: `devtools` (for installation only). Please install it before installing `bayesiansprt`, which can be done as follows (execute from within a fresh `R` session):
+
+``` r
+install.packages("devtools")
+library(devtools)
+```
+
 
 ## Installation
 
-You can install the released version of `bayesiansprt` from [CRAN](https://CRAN.R-project.org) with:
+Once the dependencies are installed, `bayesiansprt` can be loaded using the following command:
 
 ``` r
-install.packages("bayesiansprt")
+devtools::install_github("Merck/bayesiansprt")
+library(bayesiansprt)
 ```
+
 
 ## Example
 
@@ -81,7 +77,9 @@ results
 <!-- What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so: -->
 
 <!-- ```{r cars} -->
+
 <!-- summary(cars) -->
+
 <!-- ``` -->
 
 <!-- You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. -->
@@ -89,7 +87,9 @@ results
 <!-- You can also embed plots, for example: -->
 
 <!-- ```{r pressure, echo = FALSE} -->
+
 <!-- plot(pressure) -->
+
 <!-- ``` -->
 
 <!-- In that case, don't forget to commit and push the resulting figure files, so they display on GitHub! -->
